@@ -1,10 +1,9 @@
 package ok2.core;
-import java.net.Socket;
+
+import java.io.IOException;
 
 import ok2.httplib.*;
 
 public abstract class OK2App {
-	public void invoke( Request req, Response res ){
-		
-	}
+	public abstract void invoke( Request req, Response res ) throws IOException;
 }

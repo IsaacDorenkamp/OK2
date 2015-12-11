@@ -20,34 +20,29 @@ public class Delegator extends Thread{
 			try{
 				cli = ss.accept();
 			}catch(IOException ioe){
+				ioe.printStackTrace();
 				System.out.println("Error when accepting client.");
+				continue;
 			}
 			if( cli == null ){
 				continue;
-			}
-			String line;
-			String total = "";
-			try {
-				BufferedReader br = new BufferedReader( new InputStreamReader(cli.getInputStream()) );
-				while( (line = br.readLine()) != null ){
-					total += line;
-				}
-				Request req = Request.parse(total); //Make sure to handle parse exceptions.
-				Response res = new Response();
-				app.invoke( req, res );
-			} catch (IOException e) {
-				System.out.println("Failed to communicate with client.");
+			}else{
+				ClientThread ct = new ClientThread(cli, app);
+				ct.start();
 			}
 		}
 	}
 	
-	public Delegator(OK2App app){
+	public Delegator(OK2App app, int port){
 		try{
-			ss = new ServerSocket();
+			ss = new ServerSocket(port);
 			this.app = app;
 		}catch(IOException ioe){
 			System.out.println("Could not instantiate Delegator.");
 		}
+	}
+	public Delegator(OK2App app){
+		this( app, 8080 );
 	}
 	
 	public void stop_server(){

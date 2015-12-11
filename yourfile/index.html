@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Your File</title>
+		<link rel="stylesheet" href="/static/style.css" />
+		<script>
+			var ws = new WebSocket("ws://localhost:8080");
+			ws.onopen = function(){
+				console.log("connection established!");
+				ws.send("Hello");
+			};
+		</script>
+	</head>
+	<body>
+		<div id="app">
+			<h1>Your Files version ${version}</h1>
+			<form method="POST" action="/save">
+				<textarea name="text" placeholder="Your File Text" rows="30">${contents}</textarea>
+				<br />
+				<button type="submit">Save</button>
+			</form>
+		</div>
+	</body>
+</html>

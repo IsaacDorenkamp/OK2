@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Set Your Cookies</title>
+		<script>
+			var box;
+			function setcookie(){
+				var name = box.value;
+				document.cookie = "name=" + name;
+				location.reload();
+			}
+			function Init(){
+				box = document.getElementById("name");
+			}
+			onload = Init;
+		</script>
+		<link rel="stylesheet" href="/static/style.css" />
+		<link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css' />
+	</head>
+	<body>
+		<div id="app">
+			<h1>Type in your Name:</h1>
+			<label>Name:</label><input id="name" type="text" placeholder="Name" />
+			<button onclick="setcookie()" class="bottom">OK</button>
+		</div>
+		<footer>
+			Greeter version ${version}
+		</footer>
+	</body>
+</html>

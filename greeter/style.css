@@ -1,0 +1,75 @@
+body{
+	font-family: "Lato", Arial, sans-serif;
+	text-align: center;
+}
+
+div#app{
+	border-radius: 5px;
+	border: 1px solid gray;
+	background: #BBB;
+	padding: 10px;
+	width: 30%;
+	margin: 0 auto;
+	margin-top: 150px;
+	position: relative;
+	
+	min-height: 150px;
+}
+div#app > h1.middle{
+	display: inline-block;
+	position: absolute;
+	left: 50%;
+	top: 40%;
+	transform: translate(-50%,-50%);
+	-webkit-transform: translate(-50%,-50%);
+	margin: 0;
+}
+footer{
+	position: absolute;
+	bottom: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+	-webkit-transform: translateX(-50%);
+}
+
+/* UI Styling */
+button{
+	border-radius: 5px;
+	padding: 5px;
+	border: 1px solid gray;
+	cursor: pointer;
+	box-shadow: none;
+	
+	transition: box-shadow .25s linear;
+	
+	outline: none;
+	
+	min-width: 75px;
+}
+button:hover{
+	box-shadow: 1px 1px 0 gray;
+}
+button.bottom{
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	-webkit-transform: translateX(-50%);
+	bottom: 10px;
+}
+label{
+	margin-right: 10px;
+}
+
+input{
+	padding: 5px;
+	border-radius: 5px;
+	border: 2px solid lightgray;
+	box-shadow: none;
+	
+	transition: box-shadow .25s linear, border-color .25s linear;
+	outline: none;
+}
+input:focus{
+	border-color: skyblue;
+	box-shadow: 0 0 3px skyblue;
+}

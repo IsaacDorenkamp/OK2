@@ -1,80 +1,97 @@
 package ok2.httplib;
 
-import java.util.Arrays;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.Socket;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 import ok2.core.*;
 
 public class Response {
+	public static final int IGNORE_CODE = -1;
+	
 	private float version;
-	private String body;
 	private int code = 200;
+	private Socket sock;
+	boolean sent = false;
+	boolean anysent = false;
 	private OutputConfiguration cfg = OutputConfiguration.TEXT;
+	private String body = "";
 	
-	private HashMap<String,String> headers = new HashMap<>();
+	private HashMap<String, String> heads = new HashMap<>();
 	
-	public Response( float version, String body ){
-		this.body = body;
+	public Response( float version, Socket sock ){
 		this.version = version;
+		this.sock = sock;
 	}
-	public Response( float version ){
-		this( version, "" );
+	public Response( Socket sock ){
+		this( 1.1F, sock );
 	}
-	public Response(){
-		this( 1.1F );
-	}
-	
-	public void setCode( int code ){
-		this.code = code;
+	public void setStatus( int stat ){
+		System.out.println("Set status to " + String.valueOf(stat));
+		this.code = stat;
+		System.out.println("The code is now " + this.code);
 	}
 	public void header( String name, String value ){
-		headers.put( name, value );
+		heads.put(name, value);
 	}
 	
 	//Getters
-	public String getHeader( String name ){
-		return headers.get( name );
-	}
-	public String getBody(){
-		return body;
-	}
 	public int getCode(){
 		return code;
 	}
 	public float getVersion(){
 		return version;
 	}
-	
-	//Response Interaction Methods
-	public void send( String text ){
-		RespObject respobj = cfg.process( text );
-		body += respobj.getOutput();
-		code = respobj.getStatus();
+	public String getBody(){
+		return body;
 	}
 	
-	//Static parse method
-	public static final Response parse(String value){
-		float version;
-		int status;
-		
-		String heads = value.split("\r\n\r\n")[0];
-		String[] lines = heads.split("\r\n");
-		String data = lines[0];
-		String[] headers = Arrays.copyOfRange( lines, 1, lines.length );
-		
-		String[] maindata = data.split(" ");
-		version = Float.parseFloat(maindata[0].split("/")[1]);
-		status = Integer.parseInt(maindata[1]);
-		
-		Response res = new Response( version );
-		res.setCode( status );
-		for( int i = 0; i < headers.length; i++ ){
-			String[] headdata = headers[i].split(":");
-			String headname = headdata[0];
-			String headvalue = headdata[1];
-			
-			res.header( headname, headvalue );
+	//Response Interaction Methods
+	public void setOutputConfiguration( OutputConfiguration oc ){
+		cfg = oc;
+	}
+	public void send( String text ){
+		RespObject respobj = cfg.process(text);
+		body += respobj.getOutput();
+		if( respobj.getStatus() != Response.IGNORE_CODE ) code = respobj.getStatus();
+	}
+	public void complete() throws IOException{
+		OutputStream sos = sock.getOutputStream();
+		String reqline = "HTTP/1.1 " + String.valueOf(code) + " " + ProtocolConstants.getCodeName(code) + "\r\n";
+		String headertext = "";
+		Set<String> keys = heads.keySet();
+		Iterator<String> it = keys.iterator();
+		while( it.hasNext() ){
+			String key = it.next();
+			String val = heads.get(key);
+			headertext += key + ": " + val + "\r\n";
 		}
-		return res;
+		String total = reqline + headertext + "\r\n" + body;
+		System.out.println("---SENT---");
+		System.out.println(total);
+		byte[] bytes = total.getBytes();
+		sos.write(bytes);
+		System.out.println("Completing request");
+		sos.flush();
+	}
+	public String toString(){
+		String reqline = "HTTP/1.1 " + String.valueOf(code) + " " + ProtocolConstants.getCodeName(code) + "\r\n";
+		String headertext = "";
+		Set<String> keys = heads.keySet();
+		Iterator<String> it = keys.iterator();
+		while( it.hasNext() ){
+			String key = it.next();
+			String val = heads.get(key);
+			headertext += key + ": " + val + "\r\n";
+		}
+		String total = reqline + headertext + "\r\n" + body;
+		return total;
+	}
+	public void end() throws IOException{
+		OutputStream sos = sock.getOutputStream();
+		sos.close();
 	}
 }

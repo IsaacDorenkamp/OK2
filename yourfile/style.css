@@ -1,0 +1,12 @@
+body{
+	font-family: Lato, Arial, sans-serif;
+}
+div#app{
+	text-align: center;
+	width: 400px;
+	margin: 0 auto;
+}
+textarea{
+	width: 95%;
+	resize: none;	
+}

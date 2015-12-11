@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Greetings</title>
+		<link rel="stylesheet" href="/static/style.css" />
+		<link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css' />
+		<script>
+			function deletecookie(){
+				document.cookie = "name=";
+				location.reload();
+			}
+		</script>
+	</head>
+	<body>
+		<div id="app">
+			<h1 class="middle">Hello, ${name}</h1>
+			<button onclick="deletecookie()" class="bottom">Change Name</button>
+		</div>
+		<footer>
+			Greeter version ${version}
+		</footer>
+	</body>
+</html>
