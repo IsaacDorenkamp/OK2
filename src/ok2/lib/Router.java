@@ -38,9 +38,7 @@ public class Router {
 					r.onroute( req, res );
 					routed = true;
 				}
-			}catch(PatternSyntaxException psy){
-				System.out.println("Invalid route " + key);
-			}
+			}catch(PatternSyntaxException psy){}
 		}
 		
 		if( !routed ){

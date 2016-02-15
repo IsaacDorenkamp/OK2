@@ -2,6 +2,7 @@ package ok2.lib;
 
 public class CookieUtil {
 	public static Cookie[] parse(String cookie){
+		if( cookie == null ) return null;
 		String[] cookies = cookie.split(";");
 		Cookie[] output = new Cookie[cookies.length];
 		for( int i = 0; i < cookies.length; i++ ){
@@ -19,6 +20,7 @@ public class CookieUtil {
 		return output;
 	}
 	public static Cookie find(String cookie, Cookie[] cookies){
+		if( cookies == null ) return null;
 		for( int i = 0; i < cookies.length; i++ ){
 			Cookie c = cookies[i];
 			if( c != null ){

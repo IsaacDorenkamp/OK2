@@ -13,8 +13,11 @@ import ok2.httplib.Request;
 import ok2.httplib.Response;
 import ok2.lib.*;
 import ok2.ext.*;
+import ok2.ext.websocket.Websocket;
+import ok2.ext.websocket.WebsocketManager;
+import ok2.ext.websocket.WebsocketServer;
 
-public class YourFile extends OK2App{
+public class YourFile extends OK2App implements WebsocketServer{
 	private Router router = new Router();
 	public static final float VERSION = 1.0F;
 	public YourFile(){
@@ -101,5 +104,10 @@ public class YourFile extends OK2App{
 		YourFile app = new YourFile();
 		OK2Server server = new OK2Server(app);
 		server.server_start();
+	}
+	@Override
+	public void websocket_invoke(Websocket ws, int opcode, WebsocketManager wm, Request req) throws IOException {
+		// TODO Auto-generated method stub
+		ws.send(ws.getData());
 	}
 }

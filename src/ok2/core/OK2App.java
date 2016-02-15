@@ -2,6 +2,7 @@ package ok2.core;
 
 import java.io.IOException;
 
+import ok2.ext.websocket.Websocket;
 import ok2.httplib.*;
 
 public abstract class OK2App {

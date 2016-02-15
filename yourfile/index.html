@@ -9,6 +9,9 @@
 				console.log("connection established!");
 				ws.send("Hello");
 			};
+			ws.onmessage = function(msg){
+				console.log(msg.data);
+			}
 		</script>
 	</head>
 	<body>

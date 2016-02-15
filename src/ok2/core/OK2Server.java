@@ -9,9 +9,13 @@ public class OK2Server {
 	private OK2App app;
 	private Delegator del;
 	
-	public OK2Server(OK2App ok2app){
+	public OK2Server(OK2App ok2app, int port){
 		app = ok2app;
-		del = new Delegator(app);
+		del = new Delegator(app, port);
+	}
+	
+	public OK2Server(OK2App ok2app){
+		this(ok2app, 8080);
 	}
 	
 	public void server_start(){

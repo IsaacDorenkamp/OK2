@@ -3,13 +3,15 @@ package ok2.core;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import ok2.httplib.*;
+import ok2.ext.websocket.WebsocketManager;
 
 import java.io.*;
 
 public class Delegator extends Thread{
 	private ServerSocket ss = null;
 	private OK2App app = null;
+	
+	private WebsocketManager wm = new WebsocketManager();
 	@Override
 	public void run(){
 		if( ss == null ){
@@ -27,7 +29,7 @@ public class Delegator extends Thread{
 			if( cli == null ){
 				continue;
 			}else{
-				ClientThread ct = new ClientThread(cli, app);
+				ClientThread ct = new ClientThread(cli, app, wm);
 				ct.start();
 			}
 		}

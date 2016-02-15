@@ -31,8 +31,12 @@ public abstract class OutputConfiguration {
 				BufferedReader fr = new BufferedReader(new FileReader(main + "/" + inp));
 				String line;
 				String total = "";
+				boolean first = true;
 				while( ( line = fr.readLine() ) != null ){
-					total += line;
+					if( first ){
+						total += line;
+						first = false;
+					}else total += "\n" + line;
 				}
 				fr.close();
 				return new RespObject(total);
